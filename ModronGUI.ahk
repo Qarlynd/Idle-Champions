@@ -574,7 +574,7 @@ MyWindowGuiClose()
     return True
 }
 
-$`::
+ScrollLock::
 Pause
 gPrevLevelTime := A_TickCount
 return
@@ -1342,7 +1342,7 @@ StuffToSpam(SendRight := 1, gLevel_Number := 1, hew := 1, formation := "")
     if (SendRight)
     var := "{Right}"
     if (gCtrlClickLeveling)
-    var := var "{Ctrl down}``{Ctrl up}"
+    var := var "{Ctrl down}{SC027}{Ctrl up}"
     else if (gClickLeveling)
     var := var "``"
     if (gContinuedLeveling > gLevel_Number)
