@@ -146,6 +146,8 @@ global gRedGemsStart	:=
 global gStackCountH	:=
 global gStackCountSB :=
 
+global gLevel_Str :=
+
 ;define a new gui with tabs and buttons
 Gui, MyWindow:New
 Gui, MyWindow:+Resize -MaximizeBox
@@ -368,6 +370,10 @@ if (gDoChests)
     Gui, MyWindow:Add, Text, vGemsSpentID x+2 w200,
 }
 
+Gui, MyWindow:Add, Text, x15 y+2 %statTabTxtWidth%, Last Areas:
+Gui, MyWindow:Add, Text, vgLevel_StrID x+2 w2000, % gLevel_Str
+
+
 
 Gui, Tab, Debug
 Gui, MyWindow:Font, w700
@@ -377,6 +383,7 @@ Gui, MyWindow:Add, Text, x15 y+10, ElapsedTime:
 Gui, MyWindow:Add, Text, vElapsedTimeID x+2 w200, % ElapsedTime
 Gui, MyWindow:Add, Text, x15 y+2, dtCurrentLevelTime:
 Gui, MyWindow:Add, Text, vdtCurrentLevelTimeID x+2 w200, % dtCurrentLevelTime
+
 
 Gui, MyWindow:Font, w700
 Gui, MyWindow:Add, Text, x15 y+15, Memory Reads: 
@@ -763,6 +770,10 @@ SetFormation(gLevel_Number)
     {
         DirectedInput("e")
     }
+    ;else if (gLevel_Number > gAreaLow)
+    ;{
+    ;    DirectedInput("e")
+    ;}
     else if (!ReadQuestRemaining(1) AND ReadTransitioning(1) AND gLevel_Number < gAreaLow)
     {
         DirectedInput("e")
@@ -1131,6 +1142,7 @@ UpdateStatTimers()
     GuiControl, MyWindow:, dtTotalTimeID, % dtTotalTime
     dtCurrentLevelTime := Round((A_TickCount - gPrevLevelTime) / 1000, 2)
     GuiControl, MyWindow:, dtCurrentLevelTimeID, % dtCurrentLevelTime	
+    GuiControl, MyWindow:, gLevel_StrID, % substr(gLevel_Str, -20)
 }
 
 UpdateElapsedTime(StartTime)
@@ -1160,7 +1172,10 @@ GemFarm()
     {
         GuiControl, MyWindow:, gLoopID, Main `Loop
         gLevel_Number := ReadCurrentZone(1)
-        
+        if (gLevel_Number != gPrevLevel)
+        {
+            gLevel_Str := gLevel_Str . " - " . gLevel_Number
+        }
         SetFormation(gLevel_Number)
 
         if (gLevel_Number = 1)
@@ -1219,6 +1234,8 @@ GemFarm()
                 }
                 SafetyCheck()
                 UpdateStartLoopStats(gLevel_Number)
+                gLevel_Str := ""
+                FileAppend " failStack", "\gemFarmLog.txt"
                 gStackFail := 1
                 gPrevLevelTime := A_TickCount
                 gprevLevel := ReadCurrentZone(1)
@@ -1240,6 +1257,8 @@ GemFarm()
             UpdateStartLoopStats(gLevel_Number)
             if (!gStackFail)
             ++gTotal_RunCount
+            FileAppend gLevel_Str, "\gemFarmLog.txt"
+            gLevel_Str := ""
             gStackFail := 0
             gPrevLevelTime := A_TickCount
             gprevLevel := ReadCurrentZone(1)
