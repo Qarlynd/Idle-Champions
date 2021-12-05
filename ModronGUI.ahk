@@ -13,6 +13,7 @@ CoordMode, Mouse, Client
 global gOpenProcess	:= 10000	;time in milliseconds for your PC to open Idle Champions
 global gGetAddress := 5000		;time in milliseconds after Idle Champions is opened for it to read moduel base address from memory
 global ScriptSpeed := 25
+global gemFarmLog := "gemFarmLog.txt"
 ;====================
 ;end of user settings
 ;====================
@@ -1214,6 +1215,7 @@ GemFarm()
         if (stacks < gSBTargetStacks AND gLevel_Number > gAreaLow)
         {
             StackFarm()
+            gLevel_Str := gLevel_Str . " - Stack"
         }
 
         if (gStackCountH < 50 AND gLevel_Number > gMinStackZone AND gStackFailRecovery AND gLevel_Number < gAreaLow)
@@ -1234,8 +1236,9 @@ GemFarm()
                 }
                 SafetyCheck()
                 UpdateStartLoopStats(gLevel_Number)
-                gLevel_Str := ""
-                FileAppend " failStack", "\gemFarmLog.txt"
+                gLevel_Str := gLevel_Str . " - failStack"
+                FileAppend %gLevel_Str%, %gemFarmLog%
+                gLevel_Str := "`n"
                 gStackFail := 1
                 gPrevLevelTime := A_TickCount
                 gprevLevel := ReadCurrentZone(1)
@@ -1257,8 +1260,8 @@ GemFarm()
             UpdateStartLoopStats(gLevel_Number)
             if (!gStackFail)
             ++gTotal_RunCount
-            FileAppend gLevel_Str, "\gemFarmLog.txt"
-            gLevel_Str := ""
+            FileAppend %gLevel_Str%, %gemFarmLog%
+            gLevel_Str := "`n"
             gStackFail := 0
             gPrevLevelTime := A_TickCount
             gprevLevel := ReadCurrentZone(1)
