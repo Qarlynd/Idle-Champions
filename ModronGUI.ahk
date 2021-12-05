@@ -1326,6 +1326,7 @@ EndAdventure()
     {
         WinActivate, ahk_exe IdleDragons.exe
         MouseClick, Left, xClick, yClick, 1
+        MouseClick, Left, xClick + 80, yClick, 1
         if (yClick < yClickMax)
         yClick := yClick + 10
         Else
