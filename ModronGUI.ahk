@@ -147,7 +147,7 @@ global gRedGemsStart	:=
 global gStackCountH	:=
 global gStackCountSB :=
 
-global gLevel_Str :=
+global gLevel_Str := "start"
 
 ;define a new gui with tabs and buttons
 Gui, MyWindow:New
@@ -771,10 +771,10 @@ SetFormation(gLevel_Number)
     {
         DirectedInput("e")
     }
-    ;else if (gLevel_Number > gAreaLow)
-    ;{
-    ;    DirectedInput("e")
-    ;}
+    else if (gLevel_Number = 800)
+    {
+        DirectedInput("e")
+    }
     else if (!ReadQuestRemaining(1) AND ReadTransitioning(1) AND gLevel_Number < gAreaLow)
     {
         DirectedInput("e")
@@ -1236,9 +1236,9 @@ GemFarm()
                 }
                 SafetyCheck()
                 UpdateStartLoopStats(gLevel_Number)
-                gLevel_Str := gLevel_Str . " - failStack"
+                gLevel_Str := gLevel_Str . " - failStack`n"
                 FileAppend %gLevel_Str%, %gemFarmLog%
-                gLevel_Str := "`n"
+                gLevel_Str := "start"
                 gStackFail := 1
                 gPrevLevelTime := A_TickCount
                 gprevLevel := ReadCurrentZone(1)
@@ -1260,8 +1260,9 @@ GemFarm()
             UpdateStartLoopStats(gLevel_Number)
             if (!gStackFail)
             ++gTotal_RunCount
+            gLevel_Str := gLevel_Str . " - Reset`n"
             FileAppend %gLevel_Str%, %gemFarmLog%
-            gLevel_Str := "`n"
+            gLevel_Str := "start"
             gStackFail := 0
             gPrevLevelTime := A_TickCount
             gprevLevel := ReadCurrentZone(1)
