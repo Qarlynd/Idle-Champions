@@ -771,7 +771,7 @@ SetFormation(gLevel_Number)
     {
         DirectedInput("e")
     }
-    else if (gLevel_Number = 800)
+    else if (gLevel_Number = 845)
     {
         DirectedInput("e")
     }
@@ -1036,6 +1036,7 @@ StackFarm()
     StartTime := A_TickCount
     ElapsedTime := 0
     GuiControl, MyWindow:, gloopID, Loading Q Formation
+    DirectedInput("{Left}gq")
     while ( QR == ReadQuestRemaining( 1 ) AND ElapsedTime < 3000 )
     {
         DirectedInput( "q{Right}" )
