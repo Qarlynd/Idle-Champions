@@ -771,7 +771,7 @@ SetFormation(gLevel_Number)
     {
         DirectedInput("e")
     }
-    else if (gLevel_Number = 845)
+    else if (gLevel_Number = 875)
     {
         DirectedInput("e")
     }
